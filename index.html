@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Have Asbjørn and Michelle gotten a baby?</title>
+  <title>Have Asbjørn and Michelle become parents?</title>
   <style>
     * {
       margin: 0;
@@ -30,6 +30,44 @@
       line-height: 1.4;
     }
 
+    .answer-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .answer-wrap::before,
+    .answer-wrap::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid #e05555;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .answer-wrap::before {
+      animation: shockwave 1s ease-out 3.2s forwards;
+    }
+
+    .answer-wrap::after {
+      animation: shockwave 1s ease-out 3.5s forwards;
+    }
+
+    @keyframes shockwave {
+      0% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(5);
+      }
+    }
+
     .answer {
       font-size: clamp(6rem, 30vw, 18rem);
       font-weight: bold;
@@ -38,6 +76,19 @@
       letter-spacing: -0.02em;
       animation: slam 1.8s cubic-bezier(0.22, 1, 0.36, 1) 2s both;
       transform-origin: center;
+    }
+
+    .subtitle {
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      color: #888;
+      margin-top: 1.5rem;
+      font-style: italic;
+      opacity: 0;
+      animation: fadein 1s ease-out 4s forwards;
+    }
+
+    @keyframes fadein {
+      to { opacity: 1; }
     }
 
     @keyframes slam {
@@ -61,7 +112,10 @@
   </style>
 </head>
 <body>
-  <h1>Have Asbjørn and Michelle gotten a baby?</h1>
-  <div class="answer">NO</div>
+  <h1>Have Asbjørn and Michelle become parents yet?</h1>
+  <div class="answer-wrap">
+    <div class="answer">NO</div>
+  </div>
+  <p class="subtitle">(They are still impatiently waiting for Knud)</p>
 </body>
 </html>
