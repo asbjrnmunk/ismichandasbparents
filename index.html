@@ -60,7 +60,7 @@
     .timestamp {
       font-size: clamp(0.7rem, 2vw, 0.85rem);
       color: #bbb;
-      margin-top: 0.75rem;
+      margin-top: 2rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       opacity: 0;
       animation: fadein 1s ease-out 4.5s forwards;
@@ -109,6 +109,7 @@
       // The answer is always "still no" — only the phrasing changes, paired
       // with a fresh "last updated" stamp to fake frequent updates.
       const MESSAGES = [
+        { answer: "Not yet... 🫠", subtitle: "(They are still <i>impatiently</i> waiting...)" },
         { answer: "Still cooking 🍞", subtitle: "(Status: <i>extremely</i> pregnant)" },
         { answer: "Almost! 🐣", subtitle: "(Asbjørn keeps refreshing this page too)" },
         { answer: "Still nope 🤰", subtitle: "(Checked again. Nothing yet.)" },
@@ -116,10 +117,14 @@
         { answer: "So close! 🤏", subtitle: "(Michelle says: <i>any day now</i> 🙏)" },
         { answer: "Soon™ ⏰", subtitle: "(The countdown continues...)" },
         { answer: "Patience, apparently... 🧘", subtitle: "(Still just the two of them — for now)" },
+        { answer: "404: Baby not found 🍼", subtitle: "(Have you tried turning Michelle off and on again?)" },
+        { answer: "Almost done baking 🎂", subtitle: "(Toothpick came out... still a bit gooey.)" },
+        { answer: "Asbjørn built a website 💻", subtitle: "(Michelle is handling the actual hard part.)" },
+        { answer: "Bags are packed 🧳", subtitle: "(The hospital bag now has its own hospital bag now.)" },
       ];
 
       const HOUR = 3600 * 1000;
-      const EPOCH = Date.UTC(2026, 6, 17); // June 17, 2026 — safely before "now"
+      const EPOCH = Date.UTC(2026, 5, 18); // June 18, 2026 (month is 0-indexed) — safely before "now"
 
       // Deterministic PRNG so the schedule & message sequence are identical on
       // every load (a refresh must NOT reshuffle the answer).
