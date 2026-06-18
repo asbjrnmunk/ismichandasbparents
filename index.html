@@ -134,12 +134,12 @@
         };
       }
 
-      // Walk forward from EPOCH in pseudo-random 5–8h steps until we pass now.
+      // Walk forward from EPOCH in pseudo-random 16–18h steps until we pass now.
       const now = Date.now();
       const rand = mulberry32(0x9e3779b9);
       let t = EPOCH, idx = 0, lastUpdate = EPOCH;
       while (true) {
-        const next = t + (5 + rand() * 3) * HOUR; // 5–8 hours
+        const next = t + (16 + rand() * 2) * HOUR; // 16–18 hours
         if (next > now) break;
         t = next; idx++; lastUpdate = t;
       }
