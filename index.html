@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Have Asbjørn and Michelle become parents yet?</title>
-  <script src="https://cdn.counter.dev/script.js" data-id="b3dc771d-812f-4e64-9ff1-986190e73657" data-utcoffset="1"></script>
+  <script src="https://cdn.counter.dev/script.js" data-id="b3dc771d-812f-4e64-9ff1-986190e73657"
+    data-utcoffset="1"></script>
   <style>
     * {
       margin: 0;
@@ -37,7 +39,7 @@
     }
 
     .answer {
-      font-size: clamp(3rem, 15vw, 9rem);
+      font-size: clamp(2.25rem, 9vw, 5.5rem);
       font-weight: bold;
       color: #4a9e5c;
       line-height: 1;
@@ -46,20 +48,47 @@
       transform-origin: center;
     }
 
+    .subtitle {
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      color: #888;
+      margin-top: 1.5rem;
+      font-style: italic;
+      opacity: 0;
+      animation: fadein 1s ease-out 4s forwards;
+    }
+
+    .timestamp {
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      color: #bbb;
+      margin-top: 2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      opacity: 0;
+      animation: fadein 1s ease-out 4.5s forwards;
+    }
+
+    @keyframes fadein {
+      to {
+        opacity: 1;
+      }
+    }
+
     @keyframes slam {
       0% {
         opacity: 0;
         transform: scale(4) translateY(-0.1em);
         filter: blur(12px);
       }
+
       70% {
         opacity: 1;
         transform: scale(0.95);
         filter: blur(0);
       }
+
       85% {
         transform: scale(1.04);
       }
+
       100% {
         transform: scale(1);
       }
@@ -75,7 +104,9 @@
     }
 
     @keyframes fadein {
-      to { opacity: 1; }
+      to {
+        opacity: 1;
+      }
     }
 
     #confetti-canvas {
@@ -88,68 +119,13 @@
     }
   </style>
 </head>
+
 <body>
   <canvas id="confetti-canvas"></canvas>
   <h1>Have Asbjørn and Michelle become parents yet?</h1>
   <div class="answer-wrap">
     <div class="answer">YES</div>
   </div>
-  <p class="subtitle">(Welcome to the world, Knud!)</p>
-
-  <script>
-    setTimeout(launchConfetti, 3800);
-
-    function launchConfetti() {
-      const canvas = document.getElementById('confetti-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const colors = ['#4a9e5c', '#f9ca24', '#e05555', '#6c5ce7', '#fd79a8', '#fdcb6e', '#00b894'];
-      const particles = [];
-
-      for (let i = 0; i < 180; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 4 + Math.random() * 10;
-        particles.push({
-          x: canvas.width / 2,
-          y: canvas.height / 2,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 6,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          w: 8 + Math.random() * 10,
-          h: 4 + Math.random() * 6,
-          rot: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.3,
-          opacity: 1,
-        });
-      }
-
-      function tick() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let alive = false;
-        for (const p of particles) {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.35;
-          p.vx *= 0.99;
-          p.rot += p.rotSpeed;
-          if (p.y > canvas.height * 0.7) p.opacity -= 0.02;
-          if (p.opacity <= 0) continue;
-          alive = true;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.globalAlpha = p.opacity;
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-          ctx.restore();
-        }
-        if (alive) requestAnimationFrame(tick);
-      }
-
-      tick();
-    }
-  </script>
 </body>
+
 </html>
