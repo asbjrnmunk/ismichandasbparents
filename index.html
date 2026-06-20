@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Have Asbjørn and Michelle become parents?</title>
+  <title>Have Asbjørn and Michelle become parents yet?</title>
   <script src="https://cdn.counter.dev/script.js" data-id="b3dc771d-812f-4e64-9ff1-986190e73657"
     data-utcoffset="1"></script>
   <style>
@@ -39,9 +39,9 @@
     }
 
     .answer {
-      font-size: clamp(2.25rem, 9vw, 5.5rem);
+      font-size: clamp(4rem, 18vw, 10rem);
       font-weight: bold;
-      color: #f4c430;
+      color: #4a9e5c;
       line-height: 1;
       letter-spacing: -0.02em;
       animation: slam 1.8s cubic-bezier(0.22, 1, 0.36, 1) 2s both;
@@ -55,15 +55,6 @@
       font-style: italic;
       opacity: 0;
       animation: fadein 1s ease-out 4s forwards;
-    }
-
-    .timestamp {
-      font-size: clamp(0.7rem, 2vw, 0.85rem);
-      color: #bbb;
-      margin-top: 2rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      opacity: 0;
-      animation: fadein 1s ease-out 4.5s forwards;
     }
 
     @keyframes fadein {
@@ -93,74 +84,94 @@
         transform: scale(1);
       }
     }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .footnote {
+      position: fixed;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      color: #aaa;
+      font-style: italic;
+      opacity: 0;
+      animation: fadein 1s ease-out 5s forwards;
+    }
   </style>
 </head>
 
 <body>
+  <canvas id="confetti-canvas"></canvas>
   <h1>Have Asbjørn and Michelle become parents yet?</h1>
   <div class="answer-wrap">
-    <div class="answer">Not yet... 🫠</div>
+    <div class="answer">YES!</div>
   </div>
-  <p class="subtitle">(They are still <i>impatiently</i> waiting...)</p>
-  <p class="timestamp"></p>
+  <p class="subtitle">(Welcome to the world, Knud*!)</p>
+  <p class="footnote">*name still to be decided...</p>
 
   <script>
-    (function () {
-      // The answer is always "still no" — only the phrasing changes, paired
-      // with a fresh "last updated" stamp to fake frequent updates.
-      const MESSAGES = [
-        { answer: "Not yet... 🫠", subtitle: "(They are still <i>impatiently</i> waiting...)" },
-        { answer: "Still cooking 🍞", subtitle: "(Status: <i>extremely</i> pregnant)" },
-        { answer: "No news yet 📭", subtitle: "(The wait continues, ever so patiently.)" },
-        { answer: "Patience, apparently... 🧘", subtitle: "(Still just the two of them — for now)" },
-        { answer: "Any day now... ⏳", subtitle: "(The hospital bag is packed. Still no baby.)" },
-        { answer: "Soon™ ⏰", subtitle: "(The countdown continues...)" },
-        { answer: "404: Baby still not found 🍼", subtitle: "(Have you tried turning Michelle off and on again?)" },
-        { answer: "Bags are packed 🧳", subtitle: "(The hospital bag has its own hospital bag now.)" },
-        { answer: "Still nope 🤰", subtitle: "(The wait continues, ever so patiently.)" },
-      ];
+    // Fire confetti once the "YES" slam animation has landed.
+    setTimeout(launchConfetti, 3800);
 
-      const HOUR = 3600 * 1000;
-      const EPOCH = Date.UTC(2026, 5, 18); // June 18, 2026 (month is 0-indexed) — safely before "now"
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-      // Deterministic PRNG so the schedule & message sequence are identical on
-      // every load (a refresh must NOT reshuffle the answer).
-      function mulberry32(seed) {
-        return function () {
-          seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-        };
+      const colors = ['#4a9e5c', '#f9ca24', '#e05555', '#6c5ce7', '#fd79a8', '#fdcb6e', '#00b894'];
+      const particles = [];
+
+      for (let i = 0; i < 180; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 4 + Math.random() * 10;
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          w: 8 + Math.random() * 10,
+          h: 4 + Math.random() * 6,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.3,
+          opacity: 1,
+        });
       }
 
-      // Walk forward from EPOCH in pseudo-random 16–18h steps until we pass now.
-      const now = Date.now();
-      const rand = mulberry32(0x9e3779b9);
-      let t = EPOCH, idx = 0, lastUpdate = EPOCH;
-      while (true) {
-        const next = t + (16 + rand() * 2) * HOUR; // 16–18 hours
-        if (next > now) break;
-        t = next; idx++; lastUpdate = t;
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.vx *= 0.99;
+          p.rot += p.rotSpeed;
+          if (p.y > canvas.height * 0.7) p.opacity -= 0.02;
+          if (p.opacity <= 0) continue;
+          alive = true;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        }
+        if (alive) requestAnimationFrame(tick);
       }
 
-      const msg = MESSAGES[idx % MESSAGES.length];
-      document.querySelector(".answer").innerHTML = msg.answer;
-      document.querySelector(".subtitle").innerHTML = msg.subtitle;
-
-      // Relative "last updated" stamp (timezone-independent); ticks every minute.
-      const stamp = document.querySelector(".timestamp");
-      function render() {
-        const mins = Math.max(0, Math.round((Date.now() - lastUpdate) / 60000));
-        let s;
-        if (mins < 1) s = "just now";
-        else if (mins < 60) s = mins + (mins === 1 ? " minute ago" : " minutes ago");
-        else { const h = Math.floor(mins / 60); s = h + (h === 1 ? " hour ago" : " hours ago"); }
-        stamp.textContent = "Last updated " + s;
-      }
-      render();
-      setInterval(render, 60000);
-    })();
+      tick();
+    }
   </script>
 </body>
 
